@@ -1,4 +1,20 @@
-const CLOUD_API = "https://crudcrud.com/api/1590397c6a29478888ad263aededca2b";
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAIO_WzagQUycGjRHiIuBK5OLaAaTD5NTg",
+  authDomain: "propertydekho-official.firebaseapp.com",
+  projectId: "propertydekho-official",
+  storageBucket: "propertydekho-official.firebasestorage.app",
+  messagingSenderId: "18868204274",
+  appId: "1:18868204274:web:4fa92548bce39a65abd66b",
+};
+
+let firestore = null;
+function db() {
+  if (!firestore) {
+    firebase.initializeApp(FIREBASE_CONFIG);
+    firestore = firebase.firestore();
+  }
+  return firestore;
+}
 
 let localApi = null;
 
@@ -17,31 +33,16 @@ async function hasLocalApi() {
   return localApi;
 }
 
-function withId(item) {
-  if (!item || typeof item !== "object") return item;
-  return { ...item, id: item.id || item._id };
-}
-
 async function cloudList(resource) {
-  const res = await fetch(`${CLOUD_API}/${resource}`, { cache: "no-store" });
-  if (!res.ok) return [];
-  const data = await res.json();
-  return Array.isArray(data) ? data.map(withId) : [];
+  const snap = await db().collection(resource).orderBy("createdAt", "desc").get();
+  return snap.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
 }
 
 async function cloudAdd(resource, item) {
   const payload = { ...item };
-  delete payload._id;
-  const res = await fetch(`${CLOUD_API}/${resource}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  if (!res.ok) {
-    const detail = await res.text();
-    throw new Error(detail || "Could not save");
-  }
-  return withId(await res.json());
+  delete payload.id;
+  const ref = await db().collection(resource).add(payload);
+  return { ...payload, id: ref.id };
 }
 
 async function loadDemands() {
