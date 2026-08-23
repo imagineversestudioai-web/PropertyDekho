@@ -306,6 +306,7 @@ function initClientsPage() {
       contact: String(data.get("contact") || "").trim(),
       location: String(data.get("location") || "").trim(),
       requirement: String(data.get("requirement") || "").trim(),
+      createdAt: new Date().toISOString(),
     };
     addClient(client)
       .then(() => {
