@@ -1,4 +1,4 @@
-# PropertyDekho
+# PropertyLooks
 
 Live open board for Lucknow property demand. Anyone can list what they want. Everyone sees the same live list.
 

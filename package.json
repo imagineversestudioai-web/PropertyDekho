@@ -1,8 +1,8 @@
 {
-  "name": "propertydekho",
+  "name": "propertylooks",
   "version": "1.0.0",
   "private": true,
-  "description": "PropertyDekho live property demand board",
+  "description": "PropertyLooks live property demand board",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

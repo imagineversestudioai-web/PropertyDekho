@@ -117,7 +117,7 @@ app.post("/api/clients", (req, res) => {
 });
 
 app.get("/api/health", (_req, res) => {
-  res.json({ ok: true, service: "propertydekho" });
+  res.json({ ok: true, service: "propertylooks" });
 });
 
 app.use(express.static(__dirname));
@@ -126,5 +126,5 @@ app.listen(PORT, () => {
   fs.mkdirSync(DATA_DIR, { recursive: true });
   if (!fs.existsSync(filePath("demands.json"))) writeList("demands.json", []);
   if (!fs.existsSync(filePath("clients.json"))) writeList("clients.json", []);
-  console.log(`PropertyDekho listening on ${PORT}`);
+  console.log(`PropertyLooks listening on ${PORT}`);
 });
